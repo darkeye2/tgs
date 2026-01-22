@@ -157,11 +157,9 @@ var server = http.createServer(function(request, response) {
        write404(response); 
     }
   } else if (url.pathname.endsWith(".png") || url.pathname.endsWith(".ttf") || url.pathname.endsWith(".jpg") || url.pathname.endsWith(".ogg")){
-    //console.log("redirect to: " + 'https://cdn.glitch.global/10fad3b7-8fbe-4ce6-a380-3c2dd70c0ca6/' + url.pathname.split("/").pop());
-    response.writeHead(302, {
-      'Location': 'https://cdn.glitch.global/10fad3b7-8fbe-4ce6-a380-3c2dd70c0ca6/' + url.pathname.split("/").pop()
-    });
-    response.end();
+    const mime = "image/" + url.pathname.split(".").pop();
+    response.writeHead(200, {"Content-Type": mime});
+    response.end(fs.readFileSync("image/" + url.pathname.split("/").pop()));
     //response.end(fs.readFileSync('https://cdn.glitch.global/10fad3b7-8fbe-4ce6-a380-3c2dd70c0ca6/' + url.pathname.split("/").pop()));
   }else if (url.pathname == '/findroom') {
     if (request.method == "OPTIONS") {
